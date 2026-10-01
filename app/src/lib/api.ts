@@ -1,8 +1,10 @@
 import { hc } from "hono/client";
 import type { ApiRoutes } from "@server/app";
+import { type Recipe } from "@server/shared-types";
 
 const api = hc<ApiRoutes>("/").api;
 
+// Current User
 export async function getCurrentUser() {
   try {
     const res = await api["current-user"].$get();
@@ -20,9 +22,62 @@ export async function getCurrentUser() {
   }
 }
 
+// Recipes
 export async function getRecipes() {
   try {
     const res = await api.recipes.$get();
+
+    if (!res.ok) {
+      throw new Error("SERVER ERROR");
+    }
+
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function createRecipe(recipe: Recipe) {
+  try {
+    const res = await api.recipes.$post({ json: recipe });
+
+    if (!res.ok) {
+      throw new Error("SERVER ERROR");
+    }
+
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getRecipe(id: string) {
+  try {
+    const res = await api.recipes[":id"].$get({ param: { id } });
+
+    if (!res.ok) {
+      throw new Error("SERVER ERROR");
+    }
+
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+// Favorites
+export async function getFavorite(id: string) {
+  try {
+    const res = await api.favorites[":id"].$get({ param: { id } });
 
     if (!res.ok) {
       throw new Error("SERVER ERROR");

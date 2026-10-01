@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// Schemas
 export const recipeSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1).max(300),
@@ -14,4 +15,19 @@ export const recipeSchema = z.object({
   ),
 });
 
+export const validRecipe = recipeSchema
+  .omit({
+    ingredients: true,
+    instructions: true,
+  })
+  .extend({
+    user_id: z.string().min(1),
+  });
+
+export const recipeIdSchema = z.object({
+  recipeId: z.uuid().min(1),
+});
+
+// Types
 export type Recipe = z.infer<typeof recipeSchema>;
+export type RecipeId = z.infer<typeof recipeIdSchema>;

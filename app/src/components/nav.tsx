@@ -7,10 +7,7 @@ export default function Nav() {
   return (
     <header className="w-full h-15 border-b border-gray-200">
       <MaxWidthWrapper className="border-x border-x-gray-200 px-5 flex justify-between items-center h-full">
-        <Link
-          to="/"
-          className="space-grotesk text-3xl font-black tracking-tighter"
-        >
+        <Link to="/" className="text-3xl font-black tracking-tighter">
           Foodbase
         </Link>
         <nav className="flex items-center gap-2.5">

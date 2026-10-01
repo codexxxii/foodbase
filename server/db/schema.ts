@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 
 // Tables
 export const users = pgTable("users", {
@@ -100,3 +101,6 @@ export const favoriteRelations = relations(favorites, ({ one }) => ({
 }));
 
 // Types
+export const RecipeSchema = createInsertSchema(recipes);
+export const ingredientsSchema = createInsertSchema(ingredients);
+export const instructionsSchema = createInsertSchema(instructions);
