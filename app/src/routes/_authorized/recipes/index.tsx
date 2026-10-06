@@ -39,7 +39,7 @@ function RouteComponent() {
               </p>
             </div>
           ) : (
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5">
               {data.data.map((recipe) => (
                 <Link
                   to="/recipes/$recipeId"

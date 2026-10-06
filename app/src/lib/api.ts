@@ -91,3 +91,37 @@ export async function getFavorite(id: string) {
     throw error;
   }
 }
+
+export async function createFavorite(recipeId: string) {
+  try {
+    const res = await api.favorites.create.$post({ json: { recipeId } });
+
+    if (!res.ok) {
+      throw new Error("SERVER ERROR");
+    }
+
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteFavorite(recipeId: string) {
+  try {
+    const res = await api.favorites.delete.$delete({ json: { recipeId } });
+
+    if (!res.ok) {
+      throw new Error("SERVER ERROR");
+    }
+
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

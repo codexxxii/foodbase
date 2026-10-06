@@ -151,7 +151,11 @@ function RouteComponent() {
             {imageUrl && !isUploading && (
               <div className="w-full h-full relative p-2">
                 <div className="w-full h-full">
-                  <img src={imageUrl} alt="" className="w-full h-full" />
+                  <img
+                    src={imageUrl}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <button
                   type="button"
@@ -254,7 +258,7 @@ function RouteComponent() {
         </div>
         <div className="w-full flex">
           <div className="w-1/2 border-r border-r-gray-200">
-            <div className="w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center">
+            <div className="sticky top-0 bg-white w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center">
               <p className="text-2xl font-black tracking-tighter">
                 Ingredients
               </p>
@@ -307,8 +311,8 @@ function RouteComponent() {
               </div>
             ))}
           </div>
-          <div className="w-1/2 border-r border-r-gray-200">
-            <div className="w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center">
+          <div className="w-1/2">
+            <div className="sticky top-0 bg-white w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center">
               <p className="text-2xl font-black tracking-tighter">
                 Instructions
               </p>

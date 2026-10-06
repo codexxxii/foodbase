@@ -86,7 +86,7 @@ function RouteComponent() {
                     </div>
                   ))}
                 </div>
-                <div className="w-1/2 border-r border-r-gray-200">
+                <div className="w-1/2">
                   <div className="w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center">
                     <p className="text-2xl font-black tracking-tighter">
                       Instructions
@@ -94,11 +94,12 @@ function RouteComponent() {
                   </div>
                   {data.recipe.instructions.map((ins, index) => (
                     <div
-                      className="w-full flex h-14 border-b border-b-gray-200 items-center px-5"
+                      className="w-full py-2.5 flex border-b border-b-gray-200 items-center px-5"
                       key={ins.id}
                     >
                       <p>
-                        {index + 1}. {ins.instruction}
+                        <span className="font-black">{index + 1}.</span>{" "}
+                        {ins.instruction}
                       </p>
                     </div>
                   ))}

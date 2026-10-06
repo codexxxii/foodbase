@@ -4,7 +4,7 @@ import { db } from "../db";
 import { and, eq } from "drizzle-orm";
 import { favorites } from "../db/schema";
 import { zValidator } from "@hono/zod-validator";
-import { recipeIdSchema } from "../shared-types";
+import { insertFavoriteSchema, recipeIdSchema } from "../shared-types";
 
 export const favoritesRoute = new Hono()
   .get("/:id", getUser, async (c) => {
@@ -31,14 +31,40 @@ export const favoritesRoute = new Hono()
       const { userId } = c.var.user;
       const body = c.req.valid("json");
 
-      
+      const validSchema = insertFavoriteSchema.parse({
+        ...body,
+        user_id: userId,
+      });
+
+      const result = await db
+        .insert(favorites)
+        .values(validSchema)
+        .returning()
+        .then((res) => res[0]);
+
+      return c.json({ result });
     } catch (error) {
       console.log(error);
       throw error;
     }
   })
-  .post("/delete", getUser, zValidator("json", recipeIdSchema), async (c) => {
+  .delete("/delete", getUser, zValidator("json", recipeIdSchema), async (c) => {
     try {
+      const { userId } = c.var.user;
+      const body = c.req.valid("json");
+
+      const result = await db
+        .delete(favorites)
+        .where(
+          and(
+            eq(favorites.recipe_id, body.recipeId),
+            eq(favorites.user_id, userId),
+          ),
+        )
+        .returning()
+        .then((res) => res[0]);
+
+      return c.json({ result });
     } catch (error) {
       console.log(error);
       throw error;
