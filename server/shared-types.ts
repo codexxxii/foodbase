@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createFavoriteSchema } from "../server/db/schema";
 
 // Schemas
 export const recipeSchema = z.object({
@@ -28,6 +29,17 @@ export const recipeIdSchema = z.object({
   recipeId: z.uuid().min(1),
 });
 
+export const favoriteSchema = createFavoriteSchema
+  .omit({
+    id: true,
+    created_at: true,
+  })
+  .extend({
+    user_id: z.string().min(1),
+    recipe_id: z.uuid().min(1),
+  });
+
 // Types
 export type Recipe = z.infer<typeof recipeSchema>;
 export type RecipeId = z.infer<typeof recipeIdSchema>;
+export type Favorite = typeof favoriteSchema;

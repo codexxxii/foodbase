@@ -30,6 +30,8 @@ export const favoritesRoute = new Hono()
     try {
       const { userId } = c.var.user;
       const body = c.req.valid("json");
+
+      
     } catch (error) {
       console.log(error);
       throw error;

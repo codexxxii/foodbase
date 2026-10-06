@@ -104,3 +104,4 @@ export const favoriteRelations = relations(favorites, ({ one }) => ({
 export const RecipeSchema = createInsertSchema(recipes);
 export const ingredientsSchema = createInsertSchema(ingredients);
 export const instructionsSchema = createInsertSchema(instructions);
+export const createFavoriteSchema = createInsertSchema(favorites);
