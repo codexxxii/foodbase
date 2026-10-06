@@ -32,7 +32,7 @@ export const favoritesRoute = new Hono()
       const body = c.req.valid("json");
 
       const validSchema = insertFavoriteSchema.parse({
-        ...body,
+        recipe_id: body.recipeId,
         user_id: userId,
       });
 

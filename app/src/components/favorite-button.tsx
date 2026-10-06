@@ -28,7 +28,7 @@ export default function FavoriteButton({ recipeId }: { recipeId: string }) {
       {data &&
         (data.favorited ? (
           <button
-            className="border-none! w-8! p-0! bg-red-50 text-red-400 grid place-items-center absolute top-0 right-0"
+            className="border-none! w-8! p-0! bg-red-200 text-red-700 grid place-items-center absolute top-0 right-0"
             onClick={() => onSubmit("delete")}
           >
             <HeartIcon size={12} />

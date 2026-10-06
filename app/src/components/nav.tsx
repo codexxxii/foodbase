@@ -20,6 +20,11 @@ export default function Nav() {
                 Recipes
               </button>
             </Link>
+            <Link to="/favorites">
+              <button className="border-transparent hover:underline">
+                Favorites
+              </button>
+            </Link>
             <Link to="/create-recipe">
               <button className="border-transparent hover:underline">
                 Create Recipe
