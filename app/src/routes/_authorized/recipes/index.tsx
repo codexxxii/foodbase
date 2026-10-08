@@ -4,15 +4,23 @@ import { useQuery } from "@tanstack/react-query";
 import { getRecipes } from "@/lib/api";
 import IsLoading from "@/components/is-loading";
 import Error from "@/components/error";
+import { context } from "@/lib/context";
 
 export const Route = createFileRoute("/_authorized/recipes/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { input, setInput, setRecipes } = context();
+  const filteredRecipes = context.getState().filteredRecipes();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["recipes"],
-    queryFn: getRecipes,
+    queryFn: async () => {
+      const data = await getRecipes();
+      setRecipes(data.data);
+      return data;
+    },
   });
 
   return (
@@ -22,6 +30,8 @@ function RouteComponent() {
         <div className="flex items-center gap-1 px-5 w-75 h-8 border border-gray-200">
           <SearchIcon size={12} className="-translate-y-px" />
           <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             type="text"
             placeholder="Search"
             className="text-sm grow outline-none"
@@ -32,7 +42,7 @@ function RouteComponent() {
       {error && <Error />}
       {data && (
         <>
-          {data.data.length < 1 ? (
+          {filteredRecipes.length < 1 ? (
             <div className="w-full h-32 grid place-items-center">
               <p className="text-sm text-gray-400 text-center">
                 No recipes found
@@ -40,7 +50,7 @@ function RouteComponent() {
             </div>
           ) : (
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5">
-              {data.data.map((recipe) => (
+              {filteredRecipes.map((recipe) => (
                 <Link
                   to="/recipes/$recipeId"
                   params={{ recipeId: recipe.id }}

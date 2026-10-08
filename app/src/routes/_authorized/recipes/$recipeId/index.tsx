@@ -4,6 +4,7 @@ import { getRecipe } from "@/lib/api";
 import IsLoading from "@/components/is-loading";
 import Error from "@/components/error";
 import FavoriteButton from "@/components/favorite-button";
+import DeleteRecipeButton from "@/components/delete-recipe-button";
 
 export const Route = createFileRoute("/_authorized/recipes/$recipeId/")({
   component: RouteComponent,
@@ -32,19 +33,22 @@ function RouteComponent() {
             </div>
           ) : (
             <div>
-              <div className="w-full h-32 border-b border-b-gray-200 px-5 flex justify-start items-center">
+              <div className="w-full h-32 border-b border-b-gray-200 px-5 flex justify-start items-center relative">
                 <p className="text-5xl font-black tracking-tighter">
                   {data.recipe.name}
                 </p>
+                <div className="absolute top-0 right-0 flex border-b border-b-gray-200 border-l border-l-gray-200 gap-px bg-gray-200">
+                  <FavoriteButton recipeId={recipeId} />
+                  <DeleteRecipeButton recipeId={recipeId} />
+                </div>
               </div>
               <div className="w-full h-100 flex border-b border-b-gray-200">
-                <div className="w-1/2 h-full border-r border-r-gray-200 relative">
+                <div className="w-1/2 h-full border-r border-r-gray-200">
                   <img
                     src={data.recipe.image_url}
                     alt={data.recipe.name}
                     className="w-full h-full object-cover"
                   />
-                  <FavoriteButton recipeId={recipeId} />
                 </div>
                 <div className="w-1/2 h-full flex flex-col">
                   <div className="w-full h-[calc(400px/6)] px-5 flex justify-between items-center border-b border-b-gray-200">

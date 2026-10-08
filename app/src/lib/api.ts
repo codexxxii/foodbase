@@ -1,6 +1,7 @@
 import { hc } from "hono/client";
 import type { ApiRoutes } from "@server/app";
 import { type Recipe } from "@server/shared-types";
+import { queryClient } from "@/main";
 
 const api = hc<ApiRoutes>("/").api;
 
@@ -102,6 +103,8 @@ export async function createFavorite(recipeId: string) {
 
     const data = await res.json();
 
+    queryClient.invalidateQueries({ queryKey: ["favorite"] });
+
     return data;
   } catch (error) {
     console.log(error);
@@ -118,6 +121,8 @@ export async function deleteFavorite(recipeId: string) {
     }
 
     const data = await res.json();
+
+    queryClient.invalidateQueries({ queryKey: ["favorite"] });
 
     return data;
   } catch (error) {

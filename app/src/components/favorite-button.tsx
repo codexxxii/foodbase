@@ -21,21 +21,21 @@ export default function FavoriteButton({ recipeId }: { recipeId: string }) {
   return (
     <>
       {isLoading && (
-        <button className="border-none! w-8! p-0! bg-white text-black grid place-items-center absolute top-0 right-0">
+        <button className="border-none! w-8! p-0! bg-white text-black grid place-items-center">
           <div className="w-2.5 h-2.5 rounded-full border border-gray-400 border-r-transparent! animate-spin" />
         </button>
       )}
       {data &&
         (data.favorited ? (
           <button
-            className="border-none! w-8! p-0! bg-red-200 text-red-700 grid place-items-center absolute top-0 right-0"
+            className="border-none! w-8! p-0! bg-sky-200 text-sky-700 grid place-items-center"
             onClick={() => onSubmit("delete")}
           >
             <HeartIcon size={12} />
           </button>
         ) : (
           <button
-            className="border-none! w-8! p-0! bg-white text-black grid place-items-center absolute top-0 right-0"
+            className="border-none! w-8! p-0! bg-white text-black grid place-items-center"
             onClick={() => onSubmit("create")}
           >
             <HeartIcon size={12} />

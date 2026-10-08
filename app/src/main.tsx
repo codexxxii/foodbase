@@ -5,7 +5,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ClerkProvider } from "@clerk/react";
 import "@/styles/globals.css";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
