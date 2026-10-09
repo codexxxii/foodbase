@@ -14,6 +14,7 @@ import { Route as AuthorizedRouteImport } from './routes/_authorized'
 import { Route as AuthorizedCreateRecipeIndexRouteImport } from './routes/_authorized/create-recipe/index'
 import { Route as AuthorizedFavoritesIndexRouteImport } from './routes/_authorized/favorites/index'
 import { Route as AuthorizedRecipesIndexRouteImport } from './routes/_authorized/recipes/index'
+import { Route as AuthorizedSearchIndexRouteImport } from './routes/_authorized/search/index'
 import { Route as AuthorizedRecipesRecipeIdIndexRouteImport } from './routes/_authorized/recipes/$recipeId/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -42,6 +43,11 @@ const AuthorizedRecipesIndexRoute = AuthorizedRecipesIndexRouteImport.update({
   path: '/recipes/',
   getParentRoute: () => AuthorizedRoute,
 } as any)
+const AuthorizedSearchIndexRoute = AuthorizedSearchIndexRouteImport.update({
+  id: '/search/',
+  path: '/search/',
+  getParentRoute: () => AuthorizedRoute,
+} as any)
 const AuthorizedRecipesRecipeIdIndexRoute =
   AuthorizedRecipesRecipeIdIndexRouteImport.update({
     id: '/recipes/$recipeId/',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/create-recipe/': typeof AuthorizedCreateRecipeIndexRoute
   '/favorites/': typeof AuthorizedFavoritesIndexRoute
   '/recipes/': typeof AuthorizedRecipesIndexRoute
+  '/search/': typeof AuthorizedSearchIndexRoute
   '/recipes/$recipeId/': typeof AuthorizedRecipesRecipeIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/create-recipe': typeof AuthorizedCreateRecipeIndexRoute
   '/favorites': typeof AuthorizedFavoritesIndexRoute
   '/recipes': typeof AuthorizedRecipesIndexRoute
+  '/search': typeof AuthorizedSearchIndexRoute
   '/recipes/$recipeId': typeof AuthorizedRecipesRecipeIdIndexRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/_authorized/create-recipe/': typeof AuthorizedCreateRecipeIndexRoute
   '/_authorized/favorites/': typeof AuthorizedFavoritesIndexRoute
   '/_authorized/recipes/': typeof AuthorizedRecipesIndexRoute
+  '/_authorized/search/': typeof AuthorizedSearchIndexRoute
   '/_authorized/recipes/$recipeId/': typeof AuthorizedRecipesRecipeIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -79,9 +88,16 @@ export interface FileRouteTypes {
     | '/create-recipe/'
     | '/favorites/'
     | '/recipes/'
+    | '/search/'
     | '/recipes/$recipeId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create-recipe' | '/favorites' | '/recipes' | '/recipes/$recipeId'
+  to:
+    | '/'
+    | '/create-recipe'
+    | '/favorites'
+    | '/recipes'
+    | '/search'
+    | '/recipes/$recipeId'
   id:
     | '__root__'
     | '/'
@@ -89,6 +105,7 @@ export interface FileRouteTypes {
     | '/_authorized/create-recipe/'
     | '/_authorized/favorites/'
     | '/_authorized/recipes/'
+    | '/_authorized/search/'
     | '/_authorized/recipes/$recipeId/'
   fileRoutesById: FileRoutesById
 }
@@ -134,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedRecipesIndexRouteImport
       parentRoute: typeof AuthorizedRoute
     }
+    '/_authorized/search/': {
+      id: '/_authorized/search/'
+      path: '/search'
+      fullPath: '/search/'
+      preLoaderRoute: typeof AuthorizedSearchIndexRouteImport
+      parentRoute: typeof AuthorizedRoute
+    }
     '/_authorized/recipes/$recipeId/': {
       id: '/_authorized/recipes/$recipeId/'
       path: '/recipes/$recipeId'
@@ -148,6 +172,7 @@ interface AuthorizedRouteChildren {
   AuthorizedCreateRecipeIndexRoute: typeof AuthorizedCreateRecipeIndexRoute
   AuthorizedFavoritesIndexRoute: typeof AuthorizedFavoritesIndexRoute
   AuthorizedRecipesIndexRoute: typeof AuthorizedRecipesIndexRoute
+  AuthorizedSearchIndexRoute: typeof AuthorizedSearchIndexRoute
   AuthorizedRecipesRecipeIdIndexRoute: typeof AuthorizedRecipesRecipeIdIndexRoute
 }
 
@@ -155,6 +180,7 @@ const AuthorizedRouteChildren: AuthorizedRouteChildren = {
   AuthorizedCreateRecipeIndexRoute: AuthorizedCreateRecipeIndexRoute,
   AuthorizedFavoritesIndexRoute: AuthorizedFavoritesIndexRoute,
   AuthorizedRecipesIndexRoute: AuthorizedRecipesIndexRoute,
+  AuthorizedSearchIndexRoute: AuthorizedSearchIndexRoute,
   AuthorizedRecipesRecipeIdIndexRoute: AuthorizedRecipesRecipeIdIndexRoute,
 }
 

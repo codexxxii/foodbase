@@ -7,6 +7,33 @@ import { zValidator } from "@hono/zod-validator";
 import { insertFavoriteSchema, recipeIdSchema } from "../shared-types";
 
 export const favoritesRoute = new Hono()
+  .get("/", getUser, async (c) => {
+    try {
+      const { userId } = c.var.user;
+
+      const data = await db.query.favorites.findMany({
+        orderBy: (favorites, { desc }) => [desc(favorites.created_at)],
+        where: eq(favorites.user_id, userId),
+        columns: {
+          id: true,
+        },
+        with: {
+          recipe: {
+            columns: {
+              id: true,
+              name: true,
+              image_url: true,
+            },
+          },
+        },
+      });
+
+      return c.json({ data });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  })
   .get("/:id", getUser, async (c) => {
     try {
       const { userId } = c.var.user;

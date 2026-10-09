@@ -81,7 +81,7 @@ function RouteComponent() {
                   </div>
                   {data.recipe.ingredients.map((ing) => (
                     <div
-                      className="w-full flex h-14 border-b border-b-gray-200 items-center px-5"
+                      className="w-full flex py-2.5 border-b border-b-gray-200 items-center px-5"
                       key={ing.id}
                     >
                       <p>

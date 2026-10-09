@@ -4,7 +4,7 @@ import { db } from "../db";
 import { and, eq } from "drizzle-orm";
 import { ingredients, instructions, recipes } from "../db/schema";
 import { zValidator } from "@hono/zod-validator";
-import { recipeSchema, validRecipe } from "../shared-types";
+import { recipeIdSchema, recipeSchema, validRecipe } from "../shared-types";
 
 export const recipesRoute = new Hono()
   .get("/", getUser, async (c) => {
@@ -101,6 +101,23 @@ export const recipesRoute = new Hono()
       // Return whatever you need
 
       return c.json({ recipe });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  })
+  .delete("/", getUser, zValidator("json", recipeIdSchema), async (c) => {
+    try {
+      const { userId } = c.var.user;
+      const { recipeId } = c.req.valid("json");
+
+      const result = await db
+        .delete(recipes)
+        .where(and(eq(recipes.user_id, userId), eq(recipes.id, recipeId)))
+        .returning()
+        .then((res) => res[0]);
+
+      return c.json({ result });
     } catch (error) {
       console.log(error);
       throw error;

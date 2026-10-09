@@ -75,7 +75,43 @@ export async function getRecipe(id: string) {
   }
 }
 
+export async function deleteRecipe(id: string) {
+  try {
+    const res = await api.recipes.$delete({ json: { recipeId: id } });
+
+    if (!res.ok) {
+      throw new Error("SERVER ERROR");
+    }
+
+    const data = await res.json();
+
+    queryClient.invalidateQueries({ queryKey: ["recipes"] });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 // Favorites
+export async function getFavoriteRecipes() {
+  try {
+    const res = await api.favorites.$get();
+
+    if (!res.ok) {
+      throw new Error("SERVER ERROR");
+    }
+
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function getFavorite(id: string) {
   try {
     const res = await api.favorites[":id"].$get({ param: { id } });
