@@ -1,0 +1,55 @@
+{
+  "name": "foodbase",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun --bun next dev",
+    "build": "bun --bun next build",
+    "start": "bun ---bun next start",
+    "db:generate": "bunx drizzle-kit generate",
+    "db:migrate": "bunx drizzle-kit migrate",
+    "db:push": "bunx drizzle-kit push",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "7.9.13",
+    "@hookform/resolvers": "5.9.1",
+    "@neondatabase/serverless": "1.2.0",
+    "@tanstack/react-query": "5.104.1",
+    "@uploadthing/react": "7.3.3",
+    "clsx": "2.1.1",
+    "dotenv": "18.0.6",
+    "drizzle-orm": "0.45.4",
+    "lucide-react": "1.52.0",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-dropzone": "20.1.3",
+    "react-hook-form": "7.89.0",
+    "sonner": "2.0.8",
+    "tailwind-merge": "3.7.0",
+    "uploadthing": "7.7.4",
+    "zod": "4.6.5",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "0.31.11",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "packageManager": "bun@1.3.14",
+  "ignoreScripts": [
+    "sharp",
+    "unrs-resolver"
+  ],
+  "trustedDependencies": [
+    "sharp",
+    "unrs-resolver"
+  ]
+}

@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+::selection {
+  background: black;
+  color: white;
+}
+
+button {
+  cursor: pointer;
+  padding: 6px 20px;
+  border: 1px solid black;
+  font-size: small;
+}
