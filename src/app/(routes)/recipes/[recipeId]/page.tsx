@@ -41,7 +41,7 @@ async function Recipe({ recipeId }: { recipeId: string }) {
         <p className="text-5xl font-black tracking-tighter">{data.name}</p>
         <div className="absolute top-0 right-0 flex border-l border-l-gray-200 border-b border-b-gray-200 bg-gray-200 gap-px">
           <FavoriteButton recipeId={recipeId} />
-          <DeleteButton />
+          <DeleteButton recipeId={recipeId} />
         </div>
       </div>
       <div className="w-full flex h-100 border-b border-b-gray-200">
@@ -86,7 +86,7 @@ async function Recipe({ recipeId }: { recipeId: string }) {
             >
               <span className="font-black">-</span>
               <p>
-                {ing.amount} {ing.ingrdients}
+                {ing.amount} {ing.ingredient}
               </p>
             </div>
           ))}

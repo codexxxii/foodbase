@@ -32,11 +32,14 @@ export const ingredients = pgTable("ingredients", {
   created_at: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
+  user_id: text("user_id").references(() => users.clerk_id, {
+    onDelete: "cascade",
+  }),
   recipe_id: uuid("recipe_id")
     .references(() => recipes.id, { onDelete: "cascade" })
     .notNull(),
   amount: text("amount").notNull(),
-  ingrdients: text("ingredient").notNull(),
+  ingredient: text("ingredient").notNull(),
 });
 
 export const instructions = pgTable("instructions", {
