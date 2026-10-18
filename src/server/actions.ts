@@ -3,11 +3,53 @@
 import { and, eq, ilike } from "drizzle-orm";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
-import { favorites, ingredients, instructions, recipes } from "./db/schema";
+import {
+  favorites,
+  ingredients,
+  instructions,
+  recipes,
+  users,
+} from "./db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { type FormSchema, recipeSchema } from "../../shared-types";
-import { RedirectToSignIn } from "@clerk/nextjs";
+
+// Users
+export async function createUser(userId: string) {
+  const { isAuthenticated, redirectToSignIn } = await auth();
+
+  if (!isAuthenticated) return redirectToSignIn();
+
+  try {
+    const newUser = await db
+      .insert(users)
+      .values({ clerk_id: userId })
+      .returning();
+
+    return newUser;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteUser(userId: string) {
+  const { isAuthenticated, redirectToSignIn } = await auth();
+
+  if (!isAuthenticated) return redirectToSignIn();
+
+  try {
+    const newUser = await db
+      .delete(users)
+      .where(eq(users.clerk_id, userId))
+      .returning();
+
+    return newUser;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
 // Recipes
 export async function getRecipes() {
