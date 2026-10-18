@@ -11,37 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useUploadThing } from "@/lib/uploadthing";
 import { ImageIcon, PlusIcon, XIcon } from "lucide-react";
 import { useState } from "react";
-import { z } from "zod";
 import { categories } from "@/app/constants";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-
-const formSchema = z.object({
-  name: z.string().min(1),
-  image_url: z.url().min(1),
-  description: z.string().min(1).max(300),
-  prep_time: z.string().min(1),
-  cook_time: z.string().min(1),
-  servings: z.string().min(1),
-  category: z.string().min(1),
-  ingredients: z
-    .array(
-      z.object({
-        amount: z.string().min(1),
-        ingredient: z.string().min(1),
-      }),
-    )
-    .min(1),
-  instructions: z
-    .array(
-      z.object({
-        instruction: z.string().min(1),
-      }),
-    )
-    .min(1),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
+import { type FormSchema, formSchema } from "../../shared-types";
+import { createRecipe } from "@/server/actions";
 
 export default function RecipeForm() {
   const [imageUrl, setImageUrl] = useState<null | string>(null);
@@ -61,8 +35,15 @@ export default function RecipeForm() {
     },
   });
 
-  const onSubmit = (values: FormSchema) => {
-    console.log(values);
+  const onSubmit = async (values: FormSchema) => {
+    try {
+      await createRecipe(values);
+      setImageUrl(null);
+      form.reset();
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
@@ -166,7 +147,7 @@ export default function RecipeForm() {
                 <button
                   onClick={() => setImageUrl(null)}
                   type="button"
-                  className="h-8! w-8! p-0! grid place-items-center bg-red-200 text-red-700 absolute top-0 right-0"
+                  className="h-8! w-8! p-0! grid place-items-center bg-red-200 text-red-700 border-red-700! absolute top-2.5 right-5"
                 >
                   <XIcon size={12} />
                 </button>
@@ -265,10 +246,10 @@ export default function RecipeForm() {
           </div>
         </div>
         {/* Ingredients & Instructions */}
-        <div className="w-full flex">
+        <div className="w-full flex relative">
           {/* Ingredients */}
           <div className="w-1/2 border-r border-r-gray-200 min-h-[calc(100vh-620px)]">
-            <div className="w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center">
+            <div className="w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center sticky top-0 bg-white">
               <p className="text-2xl font-black tracking-tighter">
                 Ingredients
               </p>
@@ -320,7 +301,7 @@ export default function RecipeForm() {
           </div>
           {/* Instructions */}
           <div className="w-1/2">
-            <div className="w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center">
+            <div className="w-full h-14 border-b border-b-gray-200 px-5 flex justify-between items-center sticky top-0 bg-white">
               <p className="text-2xl font-black tracking-tighter">
                 Instructions
               </p>

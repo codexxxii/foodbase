@@ -1,5 +1,6 @@
 import DeleteButton from "@/components/delete-button";
 import FavoriteButton from "@/components/favorite-button";
+import RecipeSkeleton from "@/components/recipe-skeleton";
 import { getRecipe } from "@/server/actions";
 import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
@@ -17,7 +18,7 @@ export default async function RecipePage({
 
   return (
     <div>
-      <Suspense fallback={<div>loading</div>}>
+      <Suspense fallback={<RecipeSkeleton />}>
         <Recipe recipeId={recipeId} />
       </Suspense>
     </div>

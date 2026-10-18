@@ -67,7 +67,6 @@ export const favorites = pgTable("favorites", {
 });
 
 // Relations
-// Relations
 export const userRelations = relations(users, ({ many }) => ({
   recipes: many(recipes),
 }));

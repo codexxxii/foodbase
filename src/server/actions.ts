@@ -3,9 +3,11 @@
 import { and, eq, ilike } from "drizzle-orm";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
-import { favorites, ingredients, recipes } from "./db/schema";
+import { favorites, ingredients, instructions, recipes } from "./db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { type FormSchema, recipeSchema } from "../../shared-types";
+import { RedirectToSignIn } from "@clerk/nextjs";
 
 // Recipes
 export async function getRecipes() {
@@ -56,11 +58,43 @@ export async function getRecipe(recipeId: string) {
   }
 }
 
-export async function createRecipe() {
-  const user = await auth();
+export async function createRecipe(recipe: FormSchema) {
+  const { isAuthenticated, userId } = await auth();
 
-  if (!user.isAuthenticated) {
+  if (!isAuthenticated) {
     throw new Error("UNAUTHORIZED");
+  }
+
+  try {
+    const validSchema = recipeSchema.parse({
+      ...recipe,
+      user_id: userId,
+    });
+
+    const [newRecipe] = await db
+      .insert(recipes)
+      .values(validSchema)
+      .returning({ id: recipes.id });
+
+    await db.insert(ingredients).values(
+      recipe.ingredients.map((ing) => ({
+        ...ing,
+        user_id: userId,
+        recipe_id: newRecipe.id,
+      })),
+    );
+
+    await db.insert(instructions).values(
+      recipe.instructions.map((ins) => ({
+        ...ins,
+        recipe_id: newRecipe.id,
+      })),
+    );
+
+    return newRecipe;
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
 
@@ -213,6 +247,38 @@ export async function deleteFavorite(recipeId: string) {
 
     revalidatePath("/recipes/:id");
     return { result };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getFavorites() {
+  const { isAuthenticated, redirectToSignIn, userId } = await auth();
+
+  if (!isAuthenticated) return redirectToSignIn();
+
+  try {
+    const data = await db.query.favorites.findMany({
+      orderBy: (favorites, { desc }) => [desc(favorites.created_at)],
+      where: eq(favorites.user_id, userId),
+      columns: {
+        id: true,
+      },
+      with: {
+        recipe: {
+          columns: {
+            id: true,
+            name: true,
+            image_url: true,
+          },
+        },
+      },
+    });
+
+    const recipes = data.map((recipe) => recipe.recipe);
+
+    return recipes;
   } catch (error) {
     console.log(error);
     throw error;
