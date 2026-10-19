@@ -15,6 +15,27 @@ import { redirect } from "next/navigation";
 import { type FormSchema, recipeSchema } from "../../shared-types";
 
 // Users
+export async function authCheck() {
+  const { isAuthenticated, redirectToSignIn, userId } = await auth();
+
+  if (!isAuthenticated) return redirectToSignIn();
+
+  try {
+    const userExists = await db.query.users.findFirst({
+      where: eq(users.clerk_id, userId),
+    });
+
+    if (!userExists) {
+      await db.insert(users).values({ clerk_id: userId });
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function createUser(userId: string) {
   const { isAuthenticated, redirectToSignIn } = await auth();
 

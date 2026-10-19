@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import AuthStatus from "@/components/auth-status";
-import MaxWidthWrapper from "@/components/max-width-wrapper";
 import Providers from "@/components/providers";
 import { cn } from "@/lib/utils";
 import "./globals.css";
-import Link from "next/link";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,17 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <ClerkProvider>
       <html lang="en" className={cn("font-normal", inter.className)}>
         <body>
-          <header className="w-full h-15 border-b border-b-gray-200">
-            <MaxWidthWrapper className="h-full flex justify-between items-center px-5 border-x border-x-gray-200">
-              <Link href="/">
-                <p className="text-3xl font-black tracking-tighter">foodbase</p>
-              </Link>
-              <AuthStatus />
-            </MaxWidthWrapper>
-          </header>
-          <MaxWidthWrapper className="min-h-[calc(100vh-60px)] border-x border-gray-200">
-            <Providers>{children}</Providers>
-          </MaxWidthWrapper>
+          <Providers>{children}</Providers>
         </body>
       </html>
     </ClerkProvider>
