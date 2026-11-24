@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer base {
+  button {
+    @apply px-3 h-7.5 border text-sm cursor-pointer;
+  }
+  ::selection {
+    @apply bg-black text-white;
+  }
+}
